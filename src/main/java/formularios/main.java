@@ -5,6 +5,11 @@
  */
 package formularios;
 
+import clases.obtenerDatos;
+import com.mycompany.javamonitoringsystem.JavaMonitoringSystem;
+import javax.swing.JSlider;
+
+
 
 /**
  *
@@ -12,11 +17,14 @@ package formularios;
  */
 public class main extends javax.swing.JFrame {
 
+    public int intervalo;
+    
     /**
      * Creates new form main
      */
     public main() {
         initComponents();
+        intervalo = 1000;
     }
 
     /**
@@ -35,6 +43,8 @@ public class main extends javax.swing.JFrame {
         menuProcesador = new javax.swing.JPanel();
         procesador = new javax.swing.JLabel();
         procesadorActivo = new javax.swing.JPanel();
+        procesador1 = new javax.swing.JLabel();
+        procesador2 = new javax.swing.JLabel();
         procesadorInfo = new javax.swing.JPanel();
         cpuNombre = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -44,10 +54,14 @@ public class main extends javax.swing.JFrame {
         cpuLogicos = new javax.swing.JLabel();
         cpuVendedor1 = new javax.swing.JLabel();
         cpuFisicos1 = new javax.swing.JLabel();
+        INTERVALO = new javax.swing.JSlider();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 884, 525));
         setResizable(false);
+        setSize(new java.awt.Dimension(798, 525));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         fondo.setBackground(new java.awt.Color(255, 255, 255));
@@ -96,6 +110,7 @@ public class main extends javax.swing.JFrame {
         procesador.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         procesador.setForeground(new java.awt.Color(255, 255, 255));
         procesador.setText("PROCESADOR");
+        procesador.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         procesadorActivo.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -110,6 +125,16 @@ public class main extends javax.swing.JFrame {
             .addGap(0, 20, Short.MAX_VALUE)
         );
 
+        procesador1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        procesador1.setForeground(new java.awt.Color(255, 255, 255));
+        procesador1.setText("DISCOS");
+        procesador1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        procesador2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        procesador2.setForeground(new java.awt.Color(255, 255, 255));
+        procesador2.setText("RAM");
+        procesador2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         javax.swing.GroupLayout menuProcesadorLayout = new javax.swing.GroupLayout(menuProcesador);
         menuProcesador.setLayout(menuProcesadorLayout);
         menuProcesadorLayout.setHorizontalGroup(
@@ -117,7 +142,11 @@ public class main extends javax.swing.JFrame {
             .addGroup(menuProcesadorLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(procesador)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(172, 172, 172)
+                .addComponent(procesador2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(procesador1)
+                .addGap(148, 148, 148))
             .addGroup(menuProcesadorLayout.createSequentialGroup()
                 .addComponent(procesadorActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 655, Short.MAX_VALUE))
@@ -126,7 +155,10 @@ public class main extends javax.swing.JFrame {
             menuProcesadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuProcesadorLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(procesador)
+                .addGroup(menuProcesadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(procesador)
+                    .addComponent(procesador1)
+                    .addComponent(procesador2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(procesadorActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -163,6 +195,28 @@ public class main extends javax.swing.JFrame {
         cpuFisicos1.setForeground(new java.awt.Color(102, 102, 102));
         cpuFisicos1.setText("NOMBRE:");
 
+        INTERVALO.setBackground(new java.awt.Color(255, 255, 255));
+        INTERVALO.setForeground(new java.awt.Color(0, 0, 0));
+        INTERVALO.setMajorTickSpacing(1);
+        INTERVALO.setMaximum(10);
+        INTERVALO.setMinimum(1);
+        INTERVALO.setMinorTickSpacing(1);
+        INTERVALO.setPaintLabels(true);
+        INTERVALO.setPaintTicks(true);
+        INTERVALO.setSnapToTicks(true);
+        INTERVALO.setValue(1);
+        INTERVALO.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                INTERVALOStateChanged(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel7.setText("DE ACTUALIZACION:");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel8.setText("INTERVALO");
+
         javax.swing.GroupLayout procesadorInfoLayout = new javax.swing.GroupLayout(procesadorInfo);
         procesadorInfo.setLayout(procesadorInfoLayout);
         procesadorInfoLayout.setHorizontalGroup(
@@ -173,19 +227,28 @@ public class main extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addGroup(procesadorInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cpuNombre)
                     .addComponent(cpuLogicos)
                     .addComponent(cpuVendedor1)
-                    .addComponent(cpuFisicos1))
-                .addContainerGap(465, Short.MAX_VALUE))
+                    .addComponent(cpuFisicos1)
+                    .addComponent(INTERVALO, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
         procesadorInfoLayout.setVerticalGroup(
             procesadorInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, procesadorInfoLayout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
+                .addContainerGap(34, Short.MAX_VALUE)
+                .addGroup(procesadorInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(procesadorInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(INTERVALO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7))
+                    .addComponent(jLabel8))
+                .addGap(18, 18, 18)
                 .addGroup(procesadorInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(cpuNombre))
@@ -201,7 +264,7 @@ public class main extends javax.swing.JFrame {
                 .addGroup(procesadorInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(cpuFisicos1))
-                .addGap(54, 54, 54))
+                .addGap(21, 21, 21))
         );
 
         fondo.add(procesadorInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 270, 690, 260));
@@ -211,6 +274,18 @@ public class main extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void INTERVALOStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_INTERVALOStateChanged
+     
+        JSlider s = (JSlider)evt.getSource();
+        if(!s.getValueIsAdjusting())
+        {
+            intervalo = s.getValue() * 1000;
+            obtenerDatos.tiempo.setDelay(intervalo);
+            System.err.println("Cambiado   " + intervalo + "  " + JavaMonitoringSystem.form.intervalo + "  " + obtenerDatos.tiempo.getDelay());
+        }
+        
+    }//GEN-LAST:event_INTERVALOStateChanged
 
     /**
      * @param args the command line arguments
@@ -239,10 +314,14 @@ public class main extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        //new main().setVisible(true);
   
     }
+    
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JSlider INTERVALO;
     public javax.swing.JPanel cabezera;
     public javax.swing.JLabel cpuFisicos1;
     public javax.swing.JLabel cpuLogicos;
@@ -253,10 +332,14 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     public javax.swing.JLabel logo;
     public javax.swing.JPanel menuProcesador;
     public javax.swing.JPanel parteArriba;
     public javax.swing.JLabel procesador;
+    public javax.swing.JLabel procesador1;
+    public javax.swing.JLabel procesador2;
     public javax.swing.JPanel procesadorActivo;
     public javax.swing.JPanel procesadorInfo;
     // End of variables declaration//GEN-END:variables

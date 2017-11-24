@@ -1,39 +1,44 @@
 package clases;
 
-import static com.mycompany.javamonitoringsystem.JavaMonitoringSystem.barra;
-import static com.mycompany.javamonitoringsystem.JavaMonitoringSystem.valor;
 import com.mycompany.javamonitoringsystem.JavaMonitoringSystem;
+import formularios.main;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JProgressBar;
+import javax.swing.Timer;
 import oshi.SystemInfo;
 
 public class obtenerDatos {
+
+    static JavaMonitoringSystem jm = new JavaMonitoringSystem();
+    static SystemInfo si = new SystemInfo();
+    static JProgressBar barra = jm.barra;
+    public static  Timer tiempo;
     
-    JavaMonitoringSystem principal = new JavaMonitoringSystem();
-    SystemInfo si = new SystemInfo();
     
-    public void CPU()
+    public static void CPU(int intervalo)
     {
         
-        principal.cpuNombre = si.getHardware().getProcessor().getName();
-        principal.cpuVendedor = si.getHardware().getProcessor().getVendor();
-        principal.cpuLogicos = si.getHardware().getProcessor().getLogicalProcessorCount();
-        principal.cpuFisicos = si.getHardware().getProcessor().getPhysicalProcessorCount();
+        jm.form.cpuNombre.setText(si.getHardware().getProcessor().getName());
+        jm.form.cpuVendedor1.setText(si.getHardware().getProcessor().getVendor());
+        jm.form.cpuLogicos.setText(Integer.toString(si.getHardware().getProcessor().getLogicalProcessorCount()));
+        jm.form.cpuFisicos1.setText(Integer.toString(si.getHardware().getProcessor().getPhysicalProcessorCount()));
         
-        Runnable run = new Runnable() {
+        tiempo = new Timer(intervalo, new ActionListener() {
             @Override
-            public void run() {
-                while(true)
-                {
-                    
-                    valor = (int) (si.getHardware().getProcessor().getSystemCpuLoad() * 100);
-                    //System.out.println("valor: " + valor);
-                    barra.setValue(valor);
-                }
-               
+            public void actionPerformed(ActionEvent e) {
+                
+                double cpu = si.getHardware().getProcessor().getSystemCpuLoad() * 100;
+                System.err.println(cpu);
+                barra.setValue((int) cpu);
+                
+                tiempo.setDelay(JavaMonitoringSystem.form.intervalo);
+                //System.err.println(si.getHardware().getProcessor().getSystemCpuLoad() * 100);
             }
-        };
+        });
+        tiempo.start();
         
-        Thread hiloCPU = new Thread(run);
-        hiloCPU.start();
+        
     }
     
 }
