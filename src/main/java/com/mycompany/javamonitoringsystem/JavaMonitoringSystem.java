@@ -30,6 +30,8 @@ public class JavaMonitoringSystem {
         form.fondo.setLayout(null);
         form.fondo.add(barra); 
         form.setVisible(true);
+        form.ramActiva.setVisible(false);
+        form.ramInfo.setVisible(false);
         datos.CPU(form.intervalo);
     }
     
